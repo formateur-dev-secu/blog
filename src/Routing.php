@@ -2,8 +2,10 @@
 
 namespace Blog;
 
+use Blog\Controller\ActionInterface;
 use Blog\Controller\ContactAction;
 use Blog\Controller\IndexAction;
+use Blog\Controller\LostAction;
 
 /**
  * Class Routing
@@ -18,13 +20,19 @@ class Routing
 
         $className = substr($url, 1);
 
+        if ($url == '' || $url == '/') {
+            $action = new IndexAction();
+            $action->renderAction();
+        }
+
         switch ($className) {
-            case "index":
-                $action = new IndexAction();
-                break;
             case "contact":
                 $action = new ContactAction();
                 break;
+        }
+
+        if (!$action instanceof ActionInterface) {
+            $action = new LostAction();
         }
 
         $action->renderAction();

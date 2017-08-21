@@ -2,13 +2,14 @@
 
 namespace Blog\Controller;
 
-class IndexAction implements ActionInterface
+/**
+ * Class IndexAction
+ * @package Blog\Controller
+ */
+class IndexAction extends MasterAction implements ActionInterface
 {
     public function renderAction()
     {
-        require_once "src/Views/index.php";
+        $this->render("index");
     }
 }
-
-//stagiare
-//Pa$$w0rd
