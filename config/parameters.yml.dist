@@ -1,0 +1,7 @@
+#parameters.yml.dist
+db:
+    user: root
+    password: ~
+    port: ~
+    host: 127.0.0.1
+    name: blog

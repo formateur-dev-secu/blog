@@ -1,0 +1,6 @@
+{
+    "name": "formateur/blog",
+    "require": {
+        "symfony/yaml": "^3.3"
+    }
+}
