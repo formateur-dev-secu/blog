@@ -7,6 +7,7 @@ use Blog\Controller\AdminPostAction;
 use Blog\Controller\ContactAction;
 use Blog\Controller\IndexAction;
 use Blog\Controller\LostAction;
+use Blog\Controller\PostAction;
 
 /**
  * Class Routing
@@ -32,6 +33,9 @@ class Routing
                 break;
             case "admin/post":
                 $action = new AdminPostAction();
+                break;
+            case strpos($className, "article"):
+                $action = new PostAction();
                 break;
         }
 

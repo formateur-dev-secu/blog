@@ -1,4 +1,13 @@
 <h1>Accueil</h1>
-<p>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aperiam, architecto autem beatae, ea, enim ex iste laboriosam officia repellat sequi tempora totam velit. Harum illo iure reiciendis rerum ullam.
-</p>
+<?php
+    if (isset($posts)) {
+        foreach ($posts as $post) {
+            echo
+            "<article>
+                <h2><a href='/article/".$post->getSlug()."'>".$post->getTitle()."</a></h2>  
+                <p>".$post->getContent()."</p> 
+                <time datetime='".$post->getDateCreated()."'>".$post->getDateCreated()."</time>
+            </article>";
+        }
+    }
+?>

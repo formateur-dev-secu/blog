@@ -1,6 +1,9 @@
 <?php
 
 namespace Blog\Bdd;
+use Blog\Entity\Post;
+use League\Event\Emitter;
+use League\Event\Event;
 
 /**
  * Class TablePost
@@ -32,8 +35,8 @@ class TablePost
 
         $posts = [];
 
-        foreach ($data->fetchAll() as $post){
-            $posts[] = $post;
+        foreach ($data->fetchAll() as $post) {
+            $posts[] = $this->normalize($post);
         }
 
         return $posts;
@@ -41,17 +44,37 @@ class TablePost
 
     public function create()
     {
+        $emitter = new Emitter();
+
+        $emitter->addListener('create', function(Event $event){
+           $this->createdEvent();
+        });
+
+        $emitter->emit("create");
+
         $data = $this->MySQL->getPDO()
             ->prepare("INSERT INTO ". $this->tableName." 
-            (title, content, slug) VALUES (:title, :content, :slug) ");
+            (title, content, slug, date_created) VALUES (:title, :content, :slug, :dateCreated) ");
 
         $data->execute([
            "title" => $this->getTitle(),
-           "content" => $this->getContent() ,
-           "slug" => $this->getSlug()
+           "content" => $this->getContent(),
+           "slug" => $this->getSlug(),
+           "dateCreated" => $this->getDateCreated()->format("Y-m-d H:i:s"),
         ]);
 
         return "Post créer";
+    }
+
+    public function getOne($field, $value)
+    {
+        $data = $this->MySQL->getPDO()
+            ->prepare("SELECT * FROM ". $this->tableName .
+                " WHERE ". $field." = (:".$field.") LIMIT 1");
+        $data->bindParam(":".$field, $value);
+        $data->execute();
+
+        return $this->normalize($data->fetch());
     }
 
     /**
@@ -66,6 +89,38 @@ class TablePost
         $clean = preg_replace("/[\/_|+ -]+/", "-", $clean);
 
         return $clean;
+    }
+
+    public function createdEvent()
+    {
+        $this->generateSlug();
+    }
+
+    public function updateEvent()
+    {
+        $this->generateSlug();
+    }
+
+    protected function generateSlug()
+    {
+        $slug = $this->slugit($this->getTitle());
+        $this->setSlug($slug);
+    }
+
+    /**
+     * @param array $data
+     * @return Post
+     */
+    public function normalize($data)
+    {
+        $class = new Post();
+        $class->setid($data['id']);
+        $class->setTitle($data['title']);
+        $class->setSlug($data['slug']);
+        $class->setContent($data['content']);
+        $class->setDateCreated($data['date_created']);
+
+        return $class;
     }
 }
 

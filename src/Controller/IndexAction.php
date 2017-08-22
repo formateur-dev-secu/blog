@@ -16,6 +16,8 @@ class IndexAction extends MasterAction implements ActionInterface
     {
         $postEntity = new Post();
 
-        $this->render("index");
+        $posts = $postEntity->getAll();
+
+        $this->render("index", ["posts" => $posts]);
     }
 }
