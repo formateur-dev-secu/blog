@@ -11,6 +11,7 @@
         <ul class="nav nav-pills">
             <li><a href="/">Accueil</a></li>
             <li><a href="/contact">Contact</a></li>
+            <li><a href="/admin/post">Nouveau Post</a></li>
         </ul>
     </nav>
 

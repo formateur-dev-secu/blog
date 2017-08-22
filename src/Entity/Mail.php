@@ -53,8 +53,10 @@ class Mail
             return $errors;
         } else {
             //TODO Send Mail action to: aston-dev12@yopmail.com
+            mail("aston-dev12@yopmail.com",
+                $this->title, 
+                $this->content." ".$this->email);
             return ["Votre message à bien été envoyé."];
         }
     }
-
 }
