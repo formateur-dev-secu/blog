@@ -35,6 +35,8 @@ class MySQL
                 $config->getParam("dbname").';charset=utf8',
                 $config->getParam("user"),
                 $config->getParam("password"));
+
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
             throw $e;
         }

@@ -1,6 +1,7 @@
 <?php
 
 namespace Blog\Bdd;
+
 use Blog\Entity\Post;
 use League\Event\Emitter;
 use League\Event\Event;
@@ -66,11 +67,35 @@ class TablePost
         return "Post créer";
     }
 
+    public function update()
+    {
+        $emitter = new Emitter();
+
+        $emitter->addListener('update', function(Event $event){
+            $this->createdEvent();
+        });
+
+        $emitter->emit("update");
+
+        $data = $this->MySQL->getPDO()
+            ->prepare("UPDATE ". $this->tableName." SET title = :title, content = :content, slug = :slug WHERE id = :id");
+
+        $data->execute([
+            "id" => $this->getId(),
+            "title" => $this->getTitle(),
+            "content" => $this->getContent(),
+            "slug" => $this->getSlug()
+        ]);
+
+        return "Post modifier";
+    }
+
     public function getOne($field, $value)
     {
         $data = $this->MySQL->getPDO()
             ->prepare("SELECT * FROM ". $this->tableName .
                 " WHERE ". $field." = (:".$field.") LIMIT 1");
+
         $data->bindParam(":".$field, $value);
         $data->execute();
 

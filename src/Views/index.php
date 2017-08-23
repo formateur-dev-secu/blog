@@ -7,6 +7,7 @@
                 <h2><a href='/article/".$post->getSlug()."'>".$post->getTitle()."</a></h2>  
                 <p>".$post->getContent()."</p> 
                 <time datetime='".$post->getDateCreated()."'>".$post->getDateCreated()."</time>
+                <a href='/update/".$post->getSlug()."' class='btn btn-warning'>Modifier</a>
             </article>";
         }
     }

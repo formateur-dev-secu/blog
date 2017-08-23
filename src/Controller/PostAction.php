@@ -17,6 +17,6 @@ class PostAction extends MasterAction implements ActionInterface
         $postEntity = new Post();
         $post = $postEntity->getOne("slug", end($urls));
 
-        $this->render("index", ["post" => $post]);
+        $this->render("post", ["post" => $post]);
     }
 }
