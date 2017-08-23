@@ -78,7 +78,8 @@ class TablePost
         $emitter->emit("update");
 
         $data = $this->MySQL->getPDO()
-            ->prepare("UPDATE ". $this->tableName." SET title = :title, content = :content, slug = :slug WHERE id = :id");
+            ->prepare("UPDATE ".
+                $this->tableName." SET title = :title, content = :content, slug = :slug WHERE id = :id");
 
         $data->execute([
             "id" => $this->getId(),
@@ -88,6 +89,18 @@ class TablePost
         ]);
 
         return "Post modifier";
+    }
+
+    public function delete()
+    {
+        $data = $this
+            ->MySQL
+            ->getPDO()
+            ->prepare("DELETE FROM ". $this->tableName." WHERE id = :id");
+
+        $data->execute(["id" => $this->getId()]);
+
+        return "post delete";
     }
 
     public function getOne($field, $value)

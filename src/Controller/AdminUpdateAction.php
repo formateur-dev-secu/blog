@@ -29,6 +29,8 @@ class AdminUpdateAction extends MasterAction implements ActionInterface
                 $post->setContent($content);
 
             $response[] = $post->update();
+
+            header('Location: /');
         }
 
         $this->render("admin/update", ["post" => $post, "errors" => $response]);

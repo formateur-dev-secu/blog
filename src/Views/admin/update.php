@@ -14,7 +14,7 @@
         <input type="text" value="<?php echo $post->getTitle(); ?>" placeholder="Titre..." name="title" id="title" class="form-control">
     </div>
     <div class="form-group">
-        <label for="content">Contenu</label>
+        <label for="content">Contenu:</label>
         <textarea name="content" id="content" cols="30" rows="10" class="form-control"><?php echo $post->getContent(); ?></textarea>
     </div>
     <div class="form-group">

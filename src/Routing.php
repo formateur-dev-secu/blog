@@ -3,6 +3,7 @@
 namespace Blog;
 
 use Blog\Controller\ActionInterface;
+use Blog\Controller\AdminDeleteAction;
 use Blog\Controller\AdminPostAction;
 use Blog\Controller\AdminUpdateAction;
 use Blog\Controller\ContactAction;
@@ -40,6 +41,9 @@ class Routing
                 break;
             case strpos($className, "update"):
                 $action = new AdminUpdateAction();
+                break;
+            case strpos($className, "delete"):
+                $action = new AdminDeleteAction();
                 break;
         }
 
