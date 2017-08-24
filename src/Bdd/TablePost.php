@@ -10,14 +10,17 @@ use League\Event\Event;
  * Class TablePost
  * @package Blog\Bdd
  */
-class TablePost
+class TablePost extends Table implements TableInterface
 {
     /**
      * @var MySQL $MySQL
      */
-    private $MySQL;
+    protected $MySQL;
 
-    private $tableName;
+    /**
+     * @var string $tableName
+     */
+    protected $tableName;
 
     /**
      * TablePost constructor.
@@ -26,37 +29,6 @@ class TablePost
     {
         $this->MySQL = MySQL::init();
         $this->tableName = "post";
-    }
-
-    public function findBy($field, $value)
-    {
-        $data = $this->MySQL->getPDO()->prepare("SELECT * FROM ".
-            $this->tableName." WHERE ". $field. " LIKE CONCAT ('%', :search, '%')" );
-        $data->bindParam(":search", $value);
-        $data->execute();
-
-        $posts = [];
-
-        foreach ($data->fetchAll() as $post) {
-            $posts[] = $this->normalize($post);
-        }
-
-        return $posts;
-    }
-
-    public function getAll()
-    {
-        $data = $this->MySQL->getPDO()->prepare("SELECT * FROM ".
-            $this->tableName);
-        $data->execute();
-
-        $posts = [];
-
-        foreach ($data->fetchAll() as $post) {
-            $posts[] = $this->normalize($post);
-        }
-
-        return $posts;
     }
 
     public function create()
@@ -105,44 +77,6 @@ class TablePost
         ]);
 
         return "Post modifier";
-    }
-
-    public function delete()
-    {
-        $data = $this
-            ->MySQL
-            ->getPDO()
-            ->prepare("DELETE FROM ". $this->tableName." WHERE id = :id");
-
-        $data->execute(["id" => $this->getId()]);
-
-        return "post delete";
-    }
-
-    public function getOne($field, $value)
-    {
-        $data = $this->MySQL->getPDO()
-            ->prepare("SELECT * FROM ". $this->tableName .
-                " WHERE ". $field." = (:".$field.") LIMIT 1");
-
-        $data->bindParam(":".$field, $value);
-        $data->execute();
-
-        return $this->normalize($data->fetch());
-    }
-
-    /**
-     * @param $str
-     * @return mixed|string
-     */
-    protected function slugit($str)
-    {
-        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
-        $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
-        $clean = strtolower(trim($clean, '-'));
-        $clean = preg_replace("/[\/_|+ -]+/", "-", $clean);
-
-        return $clean;
     }
 
     public function createdEvent()
