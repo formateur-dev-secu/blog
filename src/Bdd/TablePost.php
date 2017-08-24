@@ -28,6 +28,22 @@ class TablePost
         $this->tableName = "post";
     }
 
+    public function findBy($field, $value)
+    {
+        $data = $this->MySQL->getPDO()->prepare("SELECT * FROM ".
+            $this->tableName." WHERE ". $field. " LIKE CONCAT ('%', :search, '%')" );
+        $data->bindParam(":search", $value);
+        $data->execute();
+
+        $posts = [];
+
+        foreach ($data->fetchAll() as $post) {
+            $posts[] = $this->normalize($post);
+        }
+
+        return $posts;
+    }
+
     public function getAll()
     {
         $data = $this->MySQL->getPDO()->prepare("SELECT * FROM ".

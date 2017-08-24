@@ -13,7 +13,16 @@
             <li><a href="/contact">Contact</a></li>
             <li><a href="/admin/post">Nouveau Post</a></li>
         </ul>
+        <div>
+            <form action="/" method="post" class="col-lg-6">
+                <input type="text" class="form-control" name="search" placeholder="Search for...">
+                <span class="input-group-btn">
+                <input type="submit" class="btn btn-secondary" value="Go">
+            </span>
+            </form>
+        </div>
     </nav>
+
 
     <?php include $path ?>
 

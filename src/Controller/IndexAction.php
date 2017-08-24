@@ -2,9 +2,8 @@
 
 namespace Blog\Controller;
 
-use Blog\Bdd\MySQL;
+use Blog\Entity\Log;
 use Blog\Entity\Post;
-
 
 /**
  * Class IndexAction
@@ -16,7 +15,15 @@ class IndexAction extends MasterAction implements ActionInterface
     {
         $postEntity = new Post();
 
-        $posts = $postEntity->getAll();
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            $search = isset($_REQUEST['search']) ? $_REQUEST['search'] : "";
+            $posts = $postEntity->findBy("title", $search);
+        } else {
+            $posts = $postEntity->getAll();
+        }
+
+        $log = new Log();
+        $log->writeAccessLog("notice", "Access index page");
 
         $this->render("index", ["posts" => $posts]);
     }
