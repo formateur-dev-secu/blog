@@ -9,6 +9,7 @@ use Blog\Controller\AdminUpdateAction;
 use Blog\Controller\AdminUserAction;
 use Blog\Controller\ContactAction;
 use Blog\Controller\IndexAction;
+use Blog\Controller\LoginAction;
 use Blog\Controller\LostAction;
 use Blog\Controller\PostAction;
 
@@ -39,6 +40,9 @@ class Routing
                 break;
             case "admin/user":
                 $action = new AdminUserAction();
+                break;
+            case "admin/login":
+                $action = new LoginAction();
                 break;
             case strpos($className, "article"):
                 $action = new PostAction();

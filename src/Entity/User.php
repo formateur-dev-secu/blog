@@ -24,9 +24,30 @@ class User extends TableUser
 
     public function __construct()
     {
+        parent::__construct();
         $this->tableName = "user";
         $this->active = true;
         $this->salt = uniqid(mt_rand(), true);
+    }
+
+    public function login()
+    {
+        $user = $this->getOne("pseudo", $this->pseudo);
+
+        if ($user instanceof User) {
+            die('cha marche');
+        }
+
+        return false;
+    }
+
+    /**
+     * @param String $password
+     * @return string
+     */
+    protected function encryptePassword($password)
+    {
+        return hash('ripemd160', md5($this->salt.$password));
     }
 
     /**
@@ -96,7 +117,7 @@ class User extends TableUser
     /**
      * @return bool
      */
-    public function isActive()
+    public function getActive()
     {
         return $this->active;
     }

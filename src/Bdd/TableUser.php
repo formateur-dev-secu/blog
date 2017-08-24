@@ -5,11 +5,18 @@ namespace Blog\Bdd;
 
 use Blog\Entity\User;
 use League\Event\Emitter;
+use League\Event\Event;
 
-class TableUser implements TableInterface
+class TableUser extends Table implements TableInterface
 {
-    private  $MySQL;
+    /**
+     * @var MySQL $MySQL
+     */
+    protected $MySQL;
 
+    /**
+     * TableUser constructor.
+     */
     public function __construct()
     {
         $this->MySQL = MySQL::init();
@@ -17,8 +24,9 @@ class TableUser implements TableInterface
 
     public function createdEvent()
     {
-
+        $this->setPassword($this->encryptePassword($this->getPassword()));
     }
+
     public function updateEvent()
     {
 
